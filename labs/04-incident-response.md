@@ -1,7 +1,7 @@
 #
-# Incidence Response
+# Incident Response
 
-So, we know there is an issue and we need to respond. We have to make some assumptions here, as the we don't have a legal department or other parts of the equation that would be an enterprise. The first assumption is that we are only moderately concerned attribution, which may seem like an odd statement, but most companies aren't interested in attribution, as it is hard to do and offers little in the way return on investment. Secondly, we are assuming that our make-believe enterprise doesn't have to worry about moving data across country lines or other HR issues that would be specific to different regions of the world.
+So, we know there is an issue and we need to respond. We have to make some assumptions here, as we don't have a legal department or other parts of the equation that an enterprise would. The first assumption is that we are only moderately concerned with attribution, which may seem like an odd statement, but most companies aren't interested in attribution, as it is hard to do and offers little in the way of return on investment. Secondly, we are assuming that our make-believe enterprise doesn't have to worry about moving data across country borders or other HR issues that would be specific to different regions of the world.
 Read Further:
 [IR Whitepaper](https://d1.awsstatic.com/whitepapers/aws_security_incident_response.pdf)
 
@@ -10,7 +10,7 @@ Read Further:
 
 So, we know we have an issue, the first thing we need to do is decide how we want to deal with it. In this case we are going to assume that the enterprise is not interested in collecting data about bad actors. The two options are 1. Stop the bad actor, or 2. Observe the bad actor, and learn about them. As stated, we are going to follow option 1 and simply stop the attacker. In this case we have a comprised account and external SSH access.
 
-We need to decide what to do fist. If we decide we want to stop the bad actor, we need to look at the different avenues of access. In this case the actor has access to your account and one of your instances. In this case, we should turn off account first in an effort to stop the bad actor from building new instances.
+We need to decide what to do first. If we decide we want to stop the bad actor, we need to look at the different avenues of access. In this case the actor has access to your account and one of your instances. In this case, we should turn off their account first in an effort to stop the bad actor from building new instances.
 
 Step 1 – Removal of Control
 
@@ -22,19 +22,19 @@ Browse to the AWS Console and go to the IAM service
 
 ![Picture2](img/Picture2.png)
 
--   You will note that the access Key age is today, not a good sign, as it means that someone has just created access. Click on the user that starts with the word "Module-"
+-   You will note that the access Key age is today, which not a good sign, as it means that someone has just created access. Click on the user that starts with the word "Module-"
 
 ![Picture3](img/Picture3.png)
 
--  Here we can see that this use has Admin access. If we need to maintain this user for investigative purposes, we can simply remove the access that it has by remove the Policies that it has associated with it and changing the credentials. If a User that is associated with application is compromised, we may only want to change the access keys and password. We do this by clicking on the Security Credentials tab.
+-  Here we can see that this user has Admin access. If we need to maintain this user for investigative purposes, we can simply remove the access that it has by remove the Policies that it has associated with it and changing the credentials. If a User that is associated with application is compromised, we may only want to change the access keys and password. We do this by clicking on the Security Credentials tab.
 
 ![Picture4](img/Picture4.png)
 
-- Here we can see that the use has been used recently. We also have the option to remove the access the they may have, by clicking the "X" near make inactive. In a real world scenario it may be a very good choice to click the "Make Inactive" button, if the comprised user has existed for a long period of time and developers may have used these credentials. You will also note that this user, is only able to login into the API, not the console, as the console password says that it is disabled. Also please review is the user has an SSH key. If they do this would mean that the bad actor could infect any products that this user has the ability to touch.
+- Here we can see that the user has made a call recently. We also have the option to remove the access the they may have, by clicking the "X" near make inactive. In a real world scenario it may be a very good choice to click the "Make Inactive" button, if the compromised user has existed for a long period of time and developers may have used these credentials. You will also note that this user is only able to make API calls, not login to the console, as the console password says that it is disabled. Also please review whether the user has an SSH key. If they do this would mean that the bad actor could infect any products that this user has the ability to touch.
 
 ## **SSH Traffic from the Outside**
 
-Second, we need to correct the SSH traffic to a server that is on the open network. We have a multitude of choices to do this. The easiest two are:
+Second, we need to correct the SSH access to a server that is on the open network. We have a multitude of options to do this. The easiest two are:
 
 1. Changing the subnet in the SSH line, in the security groups to remove the ability of the general internet to connect to this port.
 
@@ -53,7 +53,7 @@ Second, we need to correct the SSH traffic to a server that is on the open netwo
 
 ### **Scenario (This is the hard part)**
 
-In the real world you will need to do all of the above, over the course of half a second. You need to be able to automate all of it and do it quickly. In the real world, many of the actions that you would expect to do are pre written for you in things like CloudCustodian or Warden. Warden is described in another session here at re:inforce.
+In the real world you will need to do all of the above, over the course of half a second. You need to be able to automate all of it and do it quickly. In the real world, many of the actions that you would expect to do are pre-written for you in things like CloudCustodian or Warden. Warden is described in another session here at re:inforce.
 
 ### **What to do**
 
@@ -66,7 +66,7 @@ There is also a try/catch portion of each step, that reviews the output of the s
 
 ### An example Step function:
 
-{
+  {
 
   "Comment": "Remediation\_Machine",
 
@@ -182,11 +182,11 @@ There is also a try/catch portion of each step, that reviews the output of the s
 
 Step 1:
 
-###         In the above Step function, decide how you want to do first.
+###         In the above Step function, decide what you want to do first.
 
 ### **Breadcrumbs**
 
-As stated above, maybe we should take care of the account breach first. There is a way to do that in an automatically.
+As stated above, maybe we should take care of the account breach first. There is a way to do this automatically...
 
 Review:
 
@@ -218,7 +218,7 @@ def lambda\_handler(event, context):
 
 Step 2.
 
- Work through the need for a networking change. In a datacenter this could take a significant amount of time. This will be much quicker. How do we correct the Security Group? We use a similar Lambda function to that.
+ Work through the networking change requirement. In a datacenter this could take a significant amount of time. This will be much quicker. How do we correct the Security Group? We use a similar Lambda function to the above.
 
 ### **Breadcrumbs**
 
@@ -308,11 +308,11 @@ def lambda\_handler(event, context):
 
 Step 3.
 
-Once you have built and tested the two above Lambda functions. Once those functions are running you will need to incorporate them into the above Step Function in your lab. This part should be straight forward.
+Once those functions are built and tested, you will need to incorporate them into the above Step Function in your lab. This part should be straight forward.
 
 Step 4.
 
-To test this step function, you need to fire it in some way. The best way to test this is add a cloud watch rule.
+To test this step function, you need to trigger it in some way. The best way to test this is add a cloud watch rule.
 
 
 
@@ -320,6 +320,6 @@ This example show the connection for the Step function from above and the needed
 
 ![Picture5](img/Picture5.png)
 
-to we can build StepFunctions to deal with other Cloud trail event s that we deem to be untoward.
+to we can build StepFunctions to deal with other Cloud trail events that we deem to be untoward.
 
 Once we have completed this step, this lab is complete, and you should have the basic skills that will allow you build a system, to response to a threat in your application.
